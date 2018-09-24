@@ -7,25 +7,24 @@ using harsha;
 using Microsoft.EntityFrameworkCore;
 using data_name;
 using func_op;
-
+using Ifunc;
 namespace EF_core.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        SchoolContext ob=null;
-        public  ValuesController(SchoolContext base1)
+        IFunction F=null;
+        public  ValuesController(IFunction base1)
         {
-          this.ob=base1;
+          this.F=base1;
         }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
             
-            Function_op F = new Function_op();
-            List<Student> all= F.Get_all(ob);
+            List<Student> all= F.Get_all();
             //SchoolContext ob = new SchoolContext();
                            if(all.Count>0)
                            {
@@ -37,17 +36,17 @@ namespace EF_core.Controllers
         // GET api/values/5
         [HttpGet("{title}")]
         //[Route("api/values/{id}")]
-        public ActionResult<string> Get(string title, [FromQuery] string type)
+        public IActionResult Get(string title, [FromQuery] string type)
         {
             //SchoolContext op = new SchoolContext();
             //List<Student> val = op.one(id);
             //SchoolContext ob = new SchoolContext();
             List<Student> all=null;
-             Function_op F = new Function_op();
+             SchoolContext ob = new SchoolContext();
             if(type=="title")
             {
                 
-                             all = F.Get_all_title(ob,title);
+                             all = F.Get_all_title(title);
                            if(all.Count>0)
                            {
                            return Ok(all);
@@ -58,7 +57,7 @@ namespace EF_core.Controllers
 
             else if(type=="label")
             {
-                all=F.Get_all_label(ob,title);
+                all=F.Get_all_label(title);
                 if(all.Count>0)
                            {
                            return Ok(all);
@@ -70,7 +69,7 @@ namespace EF_core.Controllers
             {
                 if(title=="true")
                 {
-               List<Student> all_pin_values = F.Get_all_pinned(ob,title);
+               List<Student> all_pin_values = F.Get_all_pinned(title);
                            if(all_pin_values.Count>0)
                            {
                            return Ok(all_pin_values);
@@ -88,11 +87,11 @@ namespace EF_core.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Student o)
         {
-            Function_op F = new Function_op();
+            SchoolContext ob = new SchoolContext();
             //SchoolContext ob = new SchoolContext();
             if(o!=null)
             {
-               bool val = F.insert_in(ob,o);
+               bool val = F.insert_in(o);
        
                 return Ok("Data inserted correctly in the database");
             }
@@ -105,10 +104,10 @@ namespace EF_core.Controllers
         [HttpPut]
         public IActionResult Put( [FromBody] Student up)
         {
-            Function_op F = new Function_op();
+            SchoolContext ob = new SchoolContext();
             if (up != null)
             {
-                bool val = F.update_in(ob,up);
+                bool val = F.update_in(up);
                     // ob.Update<>
                  if(val==true)
                  {   
@@ -122,8 +121,8 @@ namespace EF_core.Controllers
         [HttpDelete("{remove_record}")]
         public IActionResult Delete(string remove_record)
         {
-                Function_op F = new Function_op();
-                bool val =F.remove_in(ob,remove_record ); 
+                SchoolContext ob = new SchoolContext();
+                bool val =F.remove_in(remove_record ); 
                 if(val==true)
                 return Ok("Data deleted from table");
            

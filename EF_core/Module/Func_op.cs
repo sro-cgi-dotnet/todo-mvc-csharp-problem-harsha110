@@ -6,23 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using harsha;
 using Microsoft.EntityFrameworkCore;
 using data_name;
+using Ifunc;
 
 namespace func_op
 {
-    public class Function_op
+    public class Function_op:IFunction
     {
-         public List<Student> Get_all(SchoolContext ob)
+         public List<Student> Get_all()
          {
-              List<Student> all=null;
-            //SchoolContext ob = new SchoolContext();
+              List<Student> all;
+            SchoolContext ob = new SchoolContext();
                              all = ob.Students
                            .Include(s => s.Many_values)
                            .Include(s => s.Many_values_ch).ToList();
                             return all;
          }
 
-         public List<Student> Get_all_title(SchoolContext ob,string title)
+         public List<Student> Get_all_title(string title)
          {
+             SchoolContext ob = new SchoolContext();
               List<Student> all=null;
               all = ob.Students
                             .Where(s=>s.Title==title)
@@ -31,8 +33,9 @@ namespace func_op
                            return all;
          }
 
-         public List<Student> Get_all_label(SchoolContext ob,string title)
+         public List<Student> Get_all_label(string title)
          {
+                SchoolContext ob = new SchoolContext();
                List<Student> all_labels = null;
                 List<Student> all_ans = new List<Student>();
              all_labels = ob.Students
@@ -51,8 +54,9 @@ namespace func_op
             return all_ans;    
          }
 
-          public List<Student> Get_all_pinned(SchoolContext ob,string title)
+          public List<Student> Get_all_pinned(string title)
          {
+             SchoolContext ob = new SchoolContext();
                List<Student> all_pin_values = ob.Students
                             .Where(s=>s.Pinned==true)
                            .Include(s => s.Many_values)
@@ -61,8 +65,9 @@ namespace func_op
          }
 
 
-          public bool insert_in(SchoolContext ob,Student o)
+          public bool insert_in(Student o)
          {
+             SchoolContext ob = new SchoolContext();
             ob.Students.Add(o);
             if(o.Many_values_ch.Count>0)
            {
@@ -85,8 +90,9 @@ namespace func_op
            return true;
          }
 
-         public bool update_in(SchoolContext ob,Student up)
+         public bool update_in(Student up)
          {
+             SchoolContext ob = new SchoolContext();
                 ob.Update<Student>(up);
                 ob.SaveChanges();
                 //Student update_value = new Student();
@@ -110,8 +116,9 @@ namespace func_op
            return true;
          }
 
-       public bool remove_in(SchoolContext ob,string remove_record)
+       public bool remove_in(string remove_record)
          {
+             SchoolContext ob = new SchoolContext();
             List<Student> all=null;
             all = ob.Students
             .Where(s=>s.Title==remove_record)

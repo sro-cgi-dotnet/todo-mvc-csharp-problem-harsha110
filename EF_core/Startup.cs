@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using data_name;
+using Ifunc;
+using func_op;
 
 namespace EF_core
 {
@@ -27,7 +29,7 @@ namespace EF_core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<SchoolContext>();
+            services.AddScoped<IFunction,Function_op>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
